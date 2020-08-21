@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BP.Manager.Manager
 {
-    public interface IBackgroundTask
+    public struct MonitorBackgroundTaskData : IBackgroundTaskData
     {
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BP.Manager.Manager
 {
-    public class BackgroundProcess : IDisposable 
+    public class BackgroundTask : IDisposable 
     {
         private readonly CancellationTokenSource cts = new CancellationTokenSource();
         private readonly IServiceScope serviceScope;
@@ -14,7 +14,7 @@ namespace BP.Manager.Manager
         public Guid Id { get; }
         public CancellationToken Token { get; }
 
-        public BackgroundProcess(Guid id, IServiceProvider serviceProvider)
+        public BackgroundTask(Guid id, IServiceProvider serviceProvider)
         {
             Id = id;
             serviceScope = serviceProvider.CreateScope();
@@ -22,7 +22,7 @@ namespace BP.Manager.Manager
             Token = cts.Token;
         }
 
-        public async Task Start<TBackgroundTask>(TBackgroundTask data) where TBackgroundTask: struct, IBackgroundTask
+        public async Task Start<TBackgroundTask>(TBackgroundTask data) where TBackgroundTask: struct, IBackgroundTaskData
         {
             await serviceProvider.GetService<IBackgroundTaskHandler<TBackgroundTask>>().Start(this, data);
         }

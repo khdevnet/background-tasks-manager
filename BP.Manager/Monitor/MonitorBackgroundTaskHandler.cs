@@ -8,18 +8,18 @@ namespace BP.Manager.Manager
 {
 
 
-    public class MonitorBackgroundTaskHandler : IBackgroundTaskHandler<MonitorBackgroundTask>
+    public class MonitorBackgroundTaskHandler : IBackgroundTaskHandler<MonitorBackgroundTaskData>
     {
         private readonly ILogger<MonitorBackgroundTaskHandler> _logger;
-        private readonly BackgroundProcessManager _manager;
+        private readonly BackgroundTaskManager _manager;
 
-        public MonitorBackgroundTaskHandler(ILogger<MonitorBackgroundTaskHandler> logger, BackgroundProcessManager manager)
+        public MonitorBackgroundTaskHandler(ILogger<MonitorBackgroundTaskHandler> logger, BackgroundTaskManager manager)
         {
             _logger = logger;
             _manager = manager;
         }
 
-        public async Task Start(BackgroundProcess bt, MonitorBackgroundTask data)
+        public async Task Start(BackgroundTask bt, MonitorBackgroundTaskData data)
         {
             // Simulate three 5-second tasks to complete
             // for each enqueued work item

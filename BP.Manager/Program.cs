@@ -14,18 +14,18 @@ namespace BP.Manager
             using var host = Host.CreateDefaultBuilder(args)
                   .ConfigureServices((hostContext, services) =>
                   {
-                      services.AddSingleton<BackgroundProcessManager>();
-                      services.AddScoped<IBackgroundTaskHandler<MonitorBackgroundTask>, MonitorBackgroundTaskHandler>();
+                      services.AddSingleton<BackgroundTaskManager>();
+                      services.AddScoped<IBackgroundTaskHandler<MonitorBackgroundTaskData>, MonitorBackgroundTaskHandler>();
                   })
                   .Build();
 
             await host.StartAsync();
 
-            var manager = host.Services.GetService<BackgroundProcessManager>();
+            var manager = host.Services.GetService<BackgroundTaskManager>();
 
-            manager.Start(new MonitorBackgroundTask());
-            manager.Start(new MonitorBackgroundTask());
-            manager.Start(new MonitorBackgroundTask());
+            manager.Start(new MonitorBackgroundTaskData());
+            manager.Start(new MonitorBackgroundTaskData());
+            manager.Start(new MonitorBackgroundTaskData());
 
             Console.WriteLine("Count: " + manager.Get().Count);
 

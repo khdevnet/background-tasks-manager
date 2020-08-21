@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace BP.Manager.Manager
 {
-    public interface IBackgroundTaskHandler<TBackgroundTask> where TBackgroundTask: struct, IBackgroundTask
+    public interface IBackgroundTaskHandler<TBackgroundTask> where TBackgroundTask: struct, IBackgroundTaskData
     {
-        Task Start(BackgroundProcess backgroundProcess, TBackgroundTask backgroundTask);
+        Task Start(BackgroundTask backgroundProcess, TBackgroundTask backgroundTask);
     }
 }
