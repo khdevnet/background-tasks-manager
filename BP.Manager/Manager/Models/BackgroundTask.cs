@@ -22,9 +22,13 @@ namespace BP.Manager.Manager
             Token = cts.Token;
         }
 
-        public async Task Start<TBackgroundTask>(TBackgroundTask data) where TBackgroundTask: struct, IBackgroundTaskData
+        public async Task Start(IBackgroundTaskData data)
         {
-            await serviceProvider.GetService<IBackgroundTaskHandler<TBackgroundTask>>().Start(this, data);
+            Type generic = typeof(IBackgroundTaskHandler<>);
+            Type[] typeArgs = { data.GetType() };
+            Type constructed = generic.MakeGenericType(typeArgs);
+            dynamic service = serviceProvider.GetService(constructed);
+            await service.StartAsync(this, data);
         }
 
         public void Cancel()

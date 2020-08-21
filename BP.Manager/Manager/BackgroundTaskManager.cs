@@ -17,26 +17,34 @@ namespace BP.Manager.Manager
             _serviceProvider = serviceProvider;
         }
 
-        public Guid Start<TBackgroundTask>(TBackgroundTask data) where TBackgroundTask: struct, IBackgroundTaskData
+        public Guid Start(Guid taskId, IBackgroundTaskData data, Func<Guid, Task> complete = null)
         {
-            var taskId = Guid.NewGuid();
             Task.Run(async () =>
             {
                 using (var task = new BackgroundTask(taskId, _serviceProvider))
                 {
                     tasks.TryAdd(task.Id, task);
-                    await task.Start<TBackgroundTask>(data);
+                    await task.Start(data);
                     tasks.TryRemove(task.Id, out var removedTask);
+                    await complete?.Invoke(removedTask.Id);
                 }
             });
             return taskId;
         }
 
-        public void CancelTask(Guid id)
+        public void Cancel(Guid id)
         {
             if (tasks.TryRemove(id, out var task))
             {
                 task.Cancel();
+            }
+        }
+
+        public void Remove(Guid id)
+        {
+            if (tasks.TryRemove(id, out var task))
+            {
+                task.Dispose();
             }
         }
 

@@ -8,7 +8,7 @@ namespace BP.Manager.Manager
 {
 
 
-    public class MonitorBackgroundTaskHandler : IBackgroundTaskHandler<MonitorBackgroundTaskData>
+    public class MonitorBackgroundTaskHandler : BackgroundTaskHandlerBase<MonitorBackgroundTaskData>
     {
         private readonly ILogger<MonitorBackgroundTaskHandler> _logger;
         private readonly BackgroundTaskManager _manager;
@@ -19,7 +19,7 @@ namespace BP.Manager.Manager
             _manager = manager;
         }
 
-        public async Task Start(BackgroundTask bt, MonitorBackgroundTaskData data)
+        protected override async Task StartAsync(BackgroundTask bt, MonitorBackgroundTaskData data)
         {
             // Simulate three 5-second tasks to complete
             // for each enqueued work item
@@ -35,7 +35,7 @@ namespace BP.Manager.Manager
             {
                 try
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(20), bt.Token);
+                    await Task.Delay(TimeSpan.FromSeconds(3), bt.Token);
                 }
                 catch (OperationCanceledException)
                 {
