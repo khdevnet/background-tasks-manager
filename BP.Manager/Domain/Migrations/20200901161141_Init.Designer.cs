@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BP.Manager.Domain.Migrations
 {
-    [DbContext(typeof(TaskStatesContext))]
-    [Migration("20200821114913_Init")]
+    [DbContext(typeof(BackgroundJobsContext))]
+    [Migration("20200901161141_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace BP.Manager.Domain.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("BP.Manager.Domain.Entity.BackgroundTaskEntity", b =>
+            modelBuilder.Entity("BP.Manager.Domain.Entity.BackgroundJobState", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,20 +30,23 @@ namespace BP.Manager.Domain.Migrations
                     b.Property<string>("Data")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Status")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaskDataType")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TaskType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("BackgroundTasks");
+                    b.ToTable("BackgroundJobs");
                 });
 #pragma warning restore 612, 618
         }

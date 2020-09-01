@@ -1,6 +1,6 @@
 ﻿namespace BP.Manager.Domain.Enums
 {
-    public enum BackgroundTaskStatus
+    public enum BackgroundJobstatus
     {
         Started,
         Finished,

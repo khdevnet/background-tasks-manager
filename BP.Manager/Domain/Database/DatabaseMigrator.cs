@@ -14,7 +14,7 @@ namespace BP.Manager.Domain.Database
         {
             using (var scope = serviceProvider.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<TaskStatesContext>();
+                var db = scope.ServiceProvider.GetRequiredService<BackgroundJobsContext>();
                 db.Database.Migrate();
             }
         }

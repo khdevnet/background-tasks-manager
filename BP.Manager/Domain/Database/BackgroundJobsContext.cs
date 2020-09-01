@@ -5,23 +5,23 @@ using System;
 
 namespace BP.Manager.Domain.Database
 {
-    public class TaskStatesContext : DbContext
+    public class BackgroundJobsContext : DbContext
     {
-        public const string ConnectionString = "Server=.;Database=BackgroundTasks;Trusted_Connection=True;MultipleActiveResultSets=true";
-        public DbSet<BackgroundTaskEntity> BackgroundTasks { get; set; }
+        public const string ConnectionString = "Server=.;Database=BackgroundJobs;Trusted_Connection=True;MultipleActiveResultSets=true";
+        public DbSet<BackgroundJobState> BackgroundJobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BackgroundTaskEntity>()
-                .Property(e => e.UserName)
+            modelBuilder.Entity<BackgroundJobState>()
+                .Property(e => e.GroupName)
                 .IsRequired();
 
-            modelBuilder.Entity<BackgroundTaskEntity>()
+            modelBuilder.Entity<BackgroundJobState>()
                 .Property(e => e.Status)
                 .IsRequired()
                 .HasConversion(
                     v => v.ToString(),
-                    v => (BackgroundTaskStatus)Enum.Parse(typeof(BackgroundTaskStatus), v));
+                    v => (BackgroundJobstatus)Enum.Parse(typeof(BackgroundJobstatus), v));
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

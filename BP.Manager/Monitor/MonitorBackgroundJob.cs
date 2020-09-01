@@ -1,41 +1,31 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BP.Manager.Manager
 {
-
-
-    public class MonitorBackgroundTaskHandler : BackgroundTaskHandlerBase<MonitorBackgroundTaskData>
+    public class MonitorBackgroundJob : BackgroundJobBase<MonitorJobData>
     {
-        private readonly ILogger<MonitorBackgroundTaskHandler> _logger;
-        private readonly BackgroundTaskManager _manager;
-
-        public MonitorBackgroundTaskHandler(ILogger<MonitorBackgroundTaskHandler> logger, BackgroundTaskManager manager)
-        {
-            _logger = logger;
-            _manager = manager;
-        }
-
-        protected override async Task StartAsync(BackgroundTask bt, MonitorBackgroundTaskData data)
+        protected override async Task Run(MonitorJobData data)
         {
             // Simulate three 5-second tasks to complete
-            // for each enqueued work item
+            //            // for each enqueued work item
 
+            var _logger = GetService<ILogger<MonitorBackgroundJob>>();
+            var _manager = GetService<BackgroundJobSessionManager>();
 
             int delayLoop = 0;
-            var guid = bt.Id.ToString();
+            var guid = Id.ToString();
 
             _logger.LogInformation(
                 "Queued Background Task {Guid} is starting.", guid);
 
-            while (!bt.Token.IsCancellationRequested && delayLoop < 3)
+            while (!Token.IsCancellationRequested && delayLoop < 3)
             {
                 try
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(3), bt.Token);
+                    await Task.Delay(TimeSpan.FromSeconds(3), Token);
                 }
                 catch (OperationCanceledException)
                 {
@@ -61,7 +51,7 @@ namespace BP.Manager.Manager
                     "Queued Background Task {Guid} was cancelled.", guid);
             }
 
-            _logger.LogInformation("Queued Background Task Left {Guid}.", _manager.Get().Count);
+            _logger.LogInformation("Queued Background Task Left {Guid}.", _manager.Get().Count());
         }
     }
 }
