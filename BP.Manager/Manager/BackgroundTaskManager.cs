@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,7 +22,7 @@ namespace BP.Manager.Manager
         {
             Task.Run(async () =>
             {
-                using (var task = new BackgroundTask(taskId, _serviceProvider))
+                using (var task = new BackgroundTask(taskId, _serviceProvider.CreateScope()))
                 {
                     tasks.TryAdd(task.Id, task);
                     await task.Start(data);

@@ -14,11 +14,11 @@ namespace BP.Manager.Manager
         public Guid Id { get; }
         public CancellationToken Token { get; }
 
-        public BackgroundTask(Guid id, IServiceProvider serviceProvider)
+        public BackgroundTask(Guid id, IServiceScope serviceScope)
         {
             Id = id;
-            serviceScope = serviceProvider.CreateScope();
-            this.serviceProvider = serviceScope.ServiceProvider;
+            this.serviceScope = serviceScope;
+            serviceProvider = serviceScope.ServiceProvider;
             Token = cts.Token;
         }
 
